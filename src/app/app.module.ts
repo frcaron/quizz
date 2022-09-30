@@ -13,7 +13,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ResultComponent } from '../components/result/result.component';
 import { QuestionTextComponent } from '../components/question/text/question-text.component';
 import { QuestionMultipleChoiceComponent } from '../components/question/multpiple-choice/question-multiple-choice.component';
-import { QuestionChoiceComponent } from '../components/question/choice/question.choice.component';
+import { QuestionChoiceComponent } from '../components/question/choice/question-choice.component';
 import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
