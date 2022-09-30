@@ -6,6 +6,12 @@
   background: #e5e5e5;
 }
 
+img {
+  margin: auto;
+  width: 100px;
+  height: 100px;
+}
+
 mat-progress-spinner {
   margin: auto;
 }
@@ -26,7 +32,7 @@ mat-progress-spinner {
   border-radius: 8px;
 
   &-subtitle1 {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 14px;
@@ -38,7 +44,7 @@ mat-progress-spinner {
   }
 
   &-subtitle2 {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 32px;
@@ -65,7 +71,7 @@ mat-progress-spinner {
   border-radius: 8px 8px 0px 0px;
 
   &-subtitle1 {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
@@ -74,7 +80,7 @@ mat-progress-spinner {
   }
 
   &-subtitle2 {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: 600;
     font-size: 24px;

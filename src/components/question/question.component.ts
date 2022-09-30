@@ -23,7 +23,9 @@ import { notNullOrUndefined } from '../../utils/util';
   },
 })
 export class QuestionComponent implements OnDestroy {
+  // id question route resolver
   readonly id$ = this.route.params.pipe(map((params) => params['id']));
+  // find current question
   readonly question$ = this.id$.pipe(
     tap(() => this._answer$.next(undefined)),
     switchMap((id) =>
@@ -33,6 +35,7 @@ export class QuestionComponent implements OnDestroy {
   readonly questions$ = this.quizzService.questions$;
   readonly playStartTs$ = this.quizzService.playStartTs$;
 
+  // convert play timestamp in timer
   readonly timer$ = this.playStartTs$.pipe(
     filter(notNullOrUndefined),
     switchMap((ts) =>
@@ -44,7 +47,7 @@ export class QuestionComponent implements OnDestroy {
     )
   );
 
-  // answer cache should be replace by a form control if subfield has been value accessor
+  // answer cache
   private readonly _answer$ = new BehaviorSubject<unknown | undefined>(
     undefined
   );

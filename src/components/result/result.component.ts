@@ -12,11 +12,11 @@ import { QuizzService } from '../../services/quizz.service';
   },
 })
 export class ResultComponent {
-readonly bestScore$ = this.quizzService.bestScore$;
-readonly questions$ = this.quizzService.questions$;
-readonly nbQuestionValid$ = this.questions$.pipe(
-  map((questions) => questions.filter(({ valid }) => valid).length)
-);
+  readonly bestScore$ = this.quizzService.bestScore$;
+  readonly questions$ = this.quizzService.questions$;
+  readonly nbQuestionValid$ = this.questions$.pipe(
+    map((questions) => questions.filter(({ valid }) => valid).length)
+  );
 
   constructor(private readonly quizzService: QuizzService) {}
 

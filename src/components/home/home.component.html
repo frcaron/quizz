@@ -7,13 +7,15 @@
     played: (played$ | async)!
   } as data"
 >
-  <div class="part1 flex-fill-row"></div>
+  <div class="part1 flex-fill-row">
+    <img src="https://angular.io/assets/images/logos/angular/angular.svg" />
+  </div>
   <div class="part2 flex-fill-row">
-  <mat-progress-spinner
-  *ngIf="data.loading"
-  [diameter]="50"
-  mode="indeterminate"
-></mat-progress-spinner>
+    <mat-progress-spinner
+      *ngIf="data.loading"
+      [diameter]="50"
+      mode="indeterminate"
+    ></mat-progress-spinner>
   </div>
 
   <div class="main">
