@@ -27,6 +27,6 @@ export class QuestionComponent {
   ) {}
 
   next() {
-    this.quizzService.next();
+    this.quizzService.next('');
   }
 }

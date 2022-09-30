@@ -11,21 +11,20 @@
     "e2e": "ng e2e"
   },
   "dependencies": {
-    "@angular/animations": "^14.0.0",
-    "@angular/cdk": "14.2.3",
-    "@angular/common": "^14.0.0",
-    "@angular/compiler": "^14.0.0",
-    "@angular/core": "^14.0.0",
-    "@angular/forms": "^14.0.0",
+    "@angular/animations": "^14.2.4",
+    "@angular/cdk": "^14.2.3",
+    "@angular/common": "^14.2.4",
+    "@angular/compiler": "^14.2.4",
+    "@angular/core": "^14.2.4",
+    "@angular/forms": "^14.2.4",
     "@angular/material": "^14.2.3",
-    "@angular/material/prebuilt-themes": "*",
-    "@angular/platform-browser": "^14.0.0",
-    "@angular/platform-browser-dynamic": "^14.0.0",
-    "@angular/router": "^14.0.0",
+    "@angular/platform-browser": "^14.2.4",
+    "@angular/platform-browser-dynamic": "^14.2.4",
+    "@angular/router": "^14.2.4",
     "@ngrx/component-store": "^14.3.1",
-    "rxjs": "~7.5.0",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.11.4"
+    "rxjs": "^7.5.7",
+    "tslib": "^2.4.0",
+    "zone.js": "^0.11.8"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.0.0",

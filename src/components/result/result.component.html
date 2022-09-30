@@ -1,4 +1,26 @@
-<ng-container *ngIf="{} as data">
+<ng-container
+  *ngIf="{
+    bestScore: (bestScore$ | async)!,
+    questions: (questions$ | async)!,
+    nbQuestionValid: (nbQuestionValid$ | async)!
+  } as data"
+>
+  <div class="flex-fill-row">
+    <div class="flex-fill-column">
+      <span>Le quizz est terminé</span>
+      <span>{{ data.nbQuestionValid }} / {{ data.questions.length }}</span>
+      <span>réponses juste</span>
+
+      <div class="flex-fill-row">
+        <span
+          >Meilleur score: {{ data.bestScore }} /
+          {{ data.questions.length }}</span
+        >
+        <mat-chip color="accent">New!</mat-chip>
+      </div>
+    </div>
+    <div class="flex-fill-column"></div>
+  </div>
   <div>
     <button mat-flat-button color="primary" (click)="close()">Fermer</button>
   </div>

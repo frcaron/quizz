@@ -11,6 +11,8 @@ export interface Question {
   readonly dto: QuestionDto;
   readonly previousId: string | undefined;
   readonly nextId: string | undefined;
+  readonly data: unknown | undefined;
+  readonly valid: boolean;
 }
 
 interface State {
@@ -87,16 +89,26 @@ export class QuizzService extends ComponentStore<State> {
     finished: false,
   }));
 
-  readonly next = this.updater((state) => {
-    const nextId = state.questions.find(
-      ({ id }) => id === state.currentStep
-    )?.nextId;
+  readonly next = this.updater((state, data: unknown) => {
+    const currentStep = state.currentStep;
+    const currentQuestion = state.questions.find(
+      ({ id }) => id === currentStep
+    );
+    const nextId = currentQuestion?.nextId;
     const finished = !nextId;
     return {
       ...state,
       currentStep: nextId,
       playing: !finished,
       finished,
+      questions: [
+        ...state.questions.filter(({ id }) => id !== currentStep),
+        {
+          ...currentQuestion,
+          data,
+          valid: this._validateQuestion(currentQuestion.dto, data),
+        },
+      ],
     };
   });
 
@@ -114,14 +126,16 @@ export class QuizzService extends ComponentStore<State> {
         'https://storage.googleapis.com/netwo-public/quizz.json'
       )
       .pipe(
-        // simulate long loading
+        // simulate 3s delay loading
         delay(3000),
         map((res) =>
           res
             .map((dto, i) => ({
-              id: this.generateId(),
+              id: this._generateId(),
               order: i + 1,
               dto,
+              data: undefined,
+              valid: false,
             }))
             .map((question, i, arr) => ({
               ...question,
@@ -132,7 +146,39 @@ export class QuizzService extends ComponentStore<State> {
       );
   }
 
-  private generateId(): string {
+  private _validateQuestion(question: QuestionDto, data: unknown): boolean {
+    switch (question.answerType) {
+      case 'choice':
+      case 'text': {
+        if (!this._isString(data)) {
+          return false;
+        }
+        return question.answer === data;
+      }
+
+      case 'multiple-choice': {
+        if (!this._isArray(data)) {
+          return false;
+        }
+        return question.answers.every((answer) =>
+          data.some((d) => answer === d)
+        );
+      }
+
+      default:
+        return false;
+    }
+  }
+
+  private _generateId(): string {
     return '_' + Math.random().toString(36).substr(2, 9);
+  }
+
+  private _isString(obj: unknown): obj is string {
+    return typeof obj === 'string';
+  }
+
+  private _isArray<T>(obj: unknown): obj is Array<T> {
+    return Array.isArray(obj);
   }
 }

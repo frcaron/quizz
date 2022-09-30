@@ -20,7 +20,7 @@ import { QuizzService } from '../services/quizz.service';
   },
 })
 export class AppComponent implements OnInit {
-  readonly debug = true;
+  readonly debug = false;
   readonly state$ = this.quizzService.state$;
   readonly currentStep$ = this.quizzService.currentStep$;
   readonly playing$ = this.quizzService.playing$;
@@ -36,14 +36,11 @@ export class AppComponent implements OnInit {
     this.quizzService.load();
 
     // not necessary to unsubscibe
-    // cause we are in the root component 
+    // cause we are in the root component
     combineLatest({
       currentStep: this.currentStep$,
-      finished: this.finished$
-    }).subscribe(({
-      currentStep,
-      finished
-    }) => {
+      finished: this.finished$,
+    }).subscribe(({ currentStep, finished }) => {
       if (currentStep) {
         this.router.navigate(['..', 'question', currentStep]);
         return;
