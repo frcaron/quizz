@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { combineLatest, exhaustMap, filter, takeUntil, timer } from 'rxjs';
-import { QuizzService } from '../services/quizz.service';
+import { QuizzService, TIMER_DELAY } from '../services/quizz.service';
 
 @Component({
   selector: 'my-app',
@@ -58,7 +58,7 @@ export class AppComponent implements OnInit {
       .pipe(
         filter((is) => is),
         exhaustMap(() =>
-          timer(2 * 60 * 1000).pipe(
+          timer(TIMER_DELAY).pipe(
             takeUntil(this.finished$.pipe(filter((is) => is)))
           )
         )

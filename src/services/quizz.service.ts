@@ -6,6 +6,8 @@ import { map, Observable, delay } from 'rxjs';
 import { QuestionDto } from '../models/dto';
 import { generateId, isArray, isString } from '../utils/util';
 
+export const TIMER_DELAY = 2 * 60 * 1000;
+
 export interface Question {
   readonly id: string;
   readonly order: number;
@@ -21,7 +23,7 @@ interface State {
   readonly loading: boolean;
   readonly questions: Question[];
   readonly bestScore: number;
-  readonly playStartTs: number | undefined;
+  readonly playExpireTs: number | undefined;
   readonly playing: boolean;
   readonly played: boolean;
   readonly finished: boolean;
@@ -36,7 +38,7 @@ export class QuizzService extends ComponentStore<State> {
   readonly loading$ = this.select(({ loading }) => loading);
   readonly questions$ = this.select(({ questions }) => questions);
   readonly bestScore$ = this.select(({ bestScore }) => bestScore);
-  readonly playStartTs$ = this.select(({ playStartTs }) => playStartTs);
+  readonly playExpireTs$ = this.select(({ playExpireTs }) => playExpireTs);
   readonly playing$ = this.select(({ playing }) => playing);
   readonly played$ = this.select(({ played }) => played);
   readonly finished$ = this.select(({ finished }) => finished);
@@ -48,7 +50,7 @@ export class QuizzService extends ComponentStore<State> {
       loading: false,
       questions: [],
       bestScore: 0,
-      playStartTs: undefined,
+      playExpireTs: undefined,
       playing: false,
       played: false,
       finished: false,
@@ -98,7 +100,7 @@ export class QuizzService extends ComponentStore<State> {
   readonly start = this.updater((state) => ({
     ...state,
     currentStep: state.questions[0]?.id,
-    playStartTs: new Date().getTime(),
+    playExpireTs: new Date().getTime() + TIMER_DELAY,
     playing: true,
     finished: false,
   }));
@@ -148,7 +150,7 @@ export class QuizzService extends ComponentStore<State> {
   readonly reset = this.updater((state) => ({
     ...state,
     currentStep: undefined,
-    playStartTs: undefined,
+    playExpireTs: undefined,
     playing: false,
     played: true,
     finished: false,

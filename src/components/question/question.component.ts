@@ -33,7 +33,7 @@ export class QuestionComponent implements OnDestroy {
     )
   );
   readonly questions$ = this.quizzService.questions$;
-  readonly playStartTs$ = this.quizzService.playStartTs$;
+  readonly playStartTs$ = this.quizzService.playExpireTs$;
 
   // convert play timestamp in timer
   readonly timer$ = this.playStartTs$.pipe(
@@ -41,7 +41,7 @@ export class QuestionComponent implements OnDestroy {
     switchMap((ts) =>
       interval(1 * 1000).pipe(
         startWith(0),
-        map(() => new Date().getTime() - ts),
+        map(() => ts - new Date().getTime()),
         map((time) => Math.round(time / 1000))
       )
     )
