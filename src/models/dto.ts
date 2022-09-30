@@ -21,4 +21,4 @@ interface QuestionMultipleChoiceDto extends QuestionBaseDto {
   readonly answers: string[];
 }
 
-type QuestionDto = QuestionTextDto | QuestionChoiceDto | QuestionMultipleChoiceDto;
+export type QuestionDto = QuestionTextDto | QuestionChoiceDto | QuestionMultipleChoiceDto;

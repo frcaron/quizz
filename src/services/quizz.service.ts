@@ -2,11 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { map, Observable } from 'rxjs';
+import { map, Observable, take, tap } from 'rxjs';
+import { QuestionDto } from '../models/dto';
 
-interface Question {
-  readonly id: number;
+export interface Question {
+  readonly id: string;
+  readonly order: number;
   readonly dto: QuestionDto;
+  readonly previousId: string | undefined;
+  readonly nextId: string | undefined;
 }
 
 interface State {
@@ -15,6 +19,8 @@ interface State {
   readonly questions: Question[];
   readonly bestScore: number;
   readonly playAtLeastOne: boolean;
+  readonly finished: boolean;
+  readonly currentStep: string | undefined;
 }
 
 @Injectable({
@@ -28,6 +34,8 @@ export class QuizzService extends ComponentStore<State> {
   readonly playAtLeastOne$ = this.select(
     ({ playAtLeastOne }) => playAtLeastOne
   );
+  readonly finished$ = this.select(({ finished }) => finished);
+  readonly currentStep$ = this.select(({ currentStep }) => currentStep);
 
   constructor(private readonly http: HttpClient) {
     super({
@@ -36,19 +44,10 @@ export class QuizzService extends ComponentStore<State> {
       questions: [],
       bestScore: 0,
       playAtLeastOne: false,
+      finished: false,
+      currentStep: undefined,
     });
   }
-
-  readonly load = this.effect(() => {
-    this.loading();
-    return this._load().pipe(
-      tapResponse<Question[]>(
-        (questions) => this.loadSuccess(questions),
-        () => this.loadFailed()
-      )
-    );
-  });
-
   readonly loading = this.updater((state) => ({
     ...state,
     loading: true,
@@ -63,6 +62,29 @@ export class QuizzService extends ComponentStore<State> {
     ...state,
     loading: false,
   }));
+  readonly load = this.effect(() => {
+    this.loading();
+    return this._load().pipe(
+      tapResponse<Question[]>(
+        (questions) => this.loadSuccess(questions),
+        () => this.loadFailed()
+      )
+    );
+  });
+
+  readonly start = this.updater((state) => ({
+    ...state,
+    currentStep: state.questions[0]?.id,
+    finished: false,
+  }));
+
+  readonly next = this.updater((state) => ({
+    ...state,
+    currentStep: state.questions.find(({ id }) => id === state.currentStep)
+      ?.nextId,
+    finished: !!state.questions.find(({ id }) => id === state.currentStep)
+      ?.nextId,
+  }));
 
   private _load(): Observable<Question[]> {
     return this.http
@@ -71,11 +93,16 @@ export class QuizzService extends ComponentStore<State> {
       )
       .pipe(
         map((res) =>
-          res.map((dto, id) => ({
-            id,
+          res.map((dto, i) => ({
+            id: this.generateId(),
+            order: i + 1,
             dto,
           }))
         )
       );
+  }
+
+  private generateId(): string {
+    return '_' + Math.random().toString(36).substr(2, 9);
   }
 }

@@ -1,2 +1,24 @@
+<ng-container
+  *ngIf="{
+    loading: (loading$ | async)!,
+    loaded: (loaded$ | async)!,
+    questions: (questions$ | async)!,
+    bestScore: (bestScore$ | async)!,
+    playAtLeastOne: (playAtLeastOne$ | async)!
+  } as data"
+>
+  Mon test technique
 
-<button mat-flat-button>Démarrer</button>
+  <button mat-flat-button (click)="start(data.questions)" [disabled]="!data.loaded">
+    Démarrer
+  </button>
+
+  <mat-progress-spinner
+    [diameter]="50"
+    mode="indeterminate"
+  ></mat-progress-spinner>
+
+  <div *ngIf="data.playAtLeastOne">
+    Best Score {{ data.bestScore }} / {{ data.questions.length }}
+  </div>
+</ng-container>
