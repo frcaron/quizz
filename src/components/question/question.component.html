@@ -5,10 +5,13 @@
     answer: (answer$ | async)!,
     timer: (timer$ | async)!
   } as data"
+  class="flex-fill-column"
 >
   <div class="header flex-row align-items-center justify-content-between">
-    <h1>Question {{ data.question.order }} / {{ data.questions.length }}</h1>
-    {{ data.timer }}
+    <h1 class="header-item flex-row">
+      Question {{ data.question.order }} / {{ data.questions.length }}
+    </h1>
+    <span class="header-item flex-row">{{ data.timer }}</span>
   </div>
 
   <ng-container [ngSwitch]="data.question.dto.answerType">
@@ -29,7 +32,7 @@
     ></question-text>
   </ng-container>
 
-  <div>
+  <div class=" actions flex-row align-items-center justify-content-center">
     <button
       type="submit"
       mat-flat-button

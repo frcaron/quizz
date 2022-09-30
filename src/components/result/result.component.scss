@@ -1,0 +1,82 @@
+.header {
+  height: 3rem;
+  padding: 16px 24px;
+  gap: 187px;
+  background: linear-gradient(
+    90deg,
+    #0e0b77 0%,
+    #2320b7 51.97%,
+    #0e0b77 101.13%
+  );
+
+  margin-bottom: 6rem;
+}
+
+.actions {
+  padding: 1rem;
+}
+
+.details {
+  &-title {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    color: #16175f;
+  }
+
+  &-score {
+    color: #3c50e0;
+    padding: 4rem 0;
+
+    &-count {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 900;
+      font-size: 83px;
+    }
+
+    &-text {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 900;
+      font-size: 24px;
+    }
+  }
+
+  &-bestscore {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #16175f;
+  }
+}
+
+.result {
+  &-title {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 19px;
+    color: #16175f;
+  }
+
+  mat-icon {
+    color: red;
+  }
+
+  .valid {
+    mat-icon {
+      color: green;
+    }
+  }
+
+  &-question {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #16175f;
+  }
+}

@@ -1,9 +1,9 @@
 <ng-container *ngIf="{
   question: (question$ | async)!
 } as data">
-  <span>{{ data.question.label }}</span>
+  <span class="label">{{ data.question.label }}</span>
 
-  <div class="choices">
+  <div class="choices flex-fill-column">
     <mat-form-field appearance="fill">
       <mat-label>Votre réponse</mat-label>
       <input matInput type="text" [formControl]="control">

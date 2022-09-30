@@ -3,9 +3,9 @@
     question: (question$ | async)!
   } as data"
 >
-  <span>{{ data.question.label }}</span>
+  <span class="label">{{ data.question.label }}</span>
 
-  <div class="choices">
+  <div class="choices flex-row">
     <mat-checkbox
       *ngFor="let choice of data.question.choices"
       (change)="toggle(choice)"

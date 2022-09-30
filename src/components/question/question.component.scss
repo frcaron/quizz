@@ -1,0 +1,22 @@
+.header {
+  height: 3rem;
+  padding: 16px 24px;
+  gap: 187px;
+  background: linear-gradient(
+    90deg,
+    #0e0b77 0%,
+    #2320b7 51.97%,
+    #0e0b77 101.13%
+  );
+
+  &-item {
+    padding: 8px;
+    gap: 8px;
+    background: #ffffff;
+    border-radius: 8px;
+  }
+}
+
+.actions {
+  padding: 1rem;
+}

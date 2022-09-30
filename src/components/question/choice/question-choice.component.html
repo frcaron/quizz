@@ -3,10 +3,9 @@
     question: (question$ | async)!
   } as data"
 >
-  <span>{{ data.question.label }}</span>
+  <span class="label">{{ data.question.label }}</span>
 
-  <div class="choices">
-    <mat-radio-group [formControl]="control">
+    <mat-radio-group [formControl]="control" class="choices flex-row">
       <mat-radio-button
         *ngFor="let choice of data.question.choices"
         [value]="choice"
@@ -14,5 +13,4 @@
         {{ choice }}
       </mat-radio-button>
     </mat-radio-group>
-  </div>
 </ng-container>
