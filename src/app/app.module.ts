@@ -10,6 +10,7 @@ import { QuestionComponent } from '../components/question/question.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ResultComponent } from '../components/result/result.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatButtonModule,
     MatProgressSpinnerModule,
   ],
-  declarations: [AppComponent, HomeComponent, QuestionComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    QuestionComponent,
+    ResultComponent,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

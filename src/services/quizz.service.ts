@@ -82,7 +82,7 @@ export class QuizzService extends ComponentStore<State> {
     const nextId = state.questions.find(
       ({ id }) => id === state.currentStep
     )?.nextId;
-    const finished = !!nextId;
+    const finished = !nextId;
     return {
       ...state,
       currentStep: nextId,
