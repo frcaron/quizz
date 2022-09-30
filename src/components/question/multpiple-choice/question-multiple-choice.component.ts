@@ -36,4 +36,8 @@ export class QuestionMultipleChoiceComponent implements OnDestroy {
   ngOnDestroy() {
     this._question$.complete();
   }
+
+  toggle(choice: string): void {
+    this.model.toggle(choice);
+  }
 }

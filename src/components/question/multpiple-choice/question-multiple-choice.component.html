@@ -5,12 +5,12 @@
 >
   <span>{{ data.question.label }}</span>
 
-  <div>
-    <!-- <section class="example-section" [formGroup]="toppings">
-      <h4>Select your toppings:</h4>
-      <p><mat-checkbox formControlName="pepperoni">Pepperoni</mat-checkbox></p>
-      <p><mat-checkbox formControlName="extracheese">Extra Cheese</mat-checkbox></p>
-      <p><mat-checkbox formControlName="mushroom">Mushroom</mat-checkbox></p>
-    </section> -->
+  <div class="choices">
+    <mat-checkbox
+      *ngFor="let choice of data.question.choices"
+      (change)="toggle(choice)"
+    >
+      {{ choice }}
+    </mat-checkbox>
   </div>
 </ng-container>

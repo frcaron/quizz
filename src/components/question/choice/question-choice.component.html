@@ -5,7 +5,7 @@
 >
   <span>{{ data.question.label }}</span>
 
-  <div>
+  <div class="choices">
     <mat-radio-group [formControl]="control">
       <mat-radio-button
         *ngFor="let choice of data.question.choices"
