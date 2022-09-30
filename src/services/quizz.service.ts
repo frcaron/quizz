@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
-import { map, Observable, take, tap } from 'rxjs';
+import { map, Observable, delay } from 'rxjs';
 import { QuestionDto } from '../models/dto';
 
 export interface Question {
@@ -78,13 +78,19 @@ export class QuizzService extends ComponentStore<State> {
     finished: false,
   }));
 
-  readonly next = this.updater((state) => ({
-    ...state,
-    currentStep: state.questions.find(({ id }) => id === state.currentStep)
-      ?.nextId,
-    finished: !!state.questions.find(({ id }) => id === state.currentStep)
-      ?.nextId,
-  }));
+  readonly next = this.updater((state) => {
+    const nextId = state.questions.find(
+      ({ id }) => id === state.currentStep
+    )?.nextId;
+    const finished = !!nextId;
+    return {
+      ...state,
+      currentStep: nextId,
+      finished,
+    };
+  });
+
+  readonly reset = this.updater((state) => state);
 
   private _load(): Observable<Question[]> {
     return this.http
@@ -92,12 +98,20 @@ export class QuizzService extends ComponentStore<State> {
         'https://storage.googleapis.com/netwo-public/quizz.json'
       )
       .pipe(
+        // simulate long loading
+        delay(3000),
         map((res) =>
-          res.map((dto, i) => ({
-            id: this.generateId(),
-            order: i + 1,
-            dto,
-          }))
+          res
+            .map((dto, i) => ({
+              id: this.generateId(),
+              order: i + 1,
+              dto,
+            }))
+            .map((question, i, arr) => ({
+              ...question,
+              previousId: arr[i - 1]?.id,
+              nextId: arr[i + 1]?.id,
+            }))
         )
       );
   }

@@ -7,13 +7,18 @@
     playAtLeastOne: (playAtLeastOne$ | async)!
   } as data"
 >
-  Mon test technique
-
-  <button mat-flat-button (click)="start(data.questions)" [disabled]="!data.loaded">
-    Démarrer
-  </button>
+  <div class="flex-column">
+    <span>{{ data.questions.length }} questions</span>
+    <span>Mon test technique</span>
+    <div>
+      <button mat-flat-button (click)="start()" [disabled]="!data.loaded">
+        Démarrer
+      </button>
+    </div>
+  </div>
 
   <mat-progress-spinner
+    *ngIf="data.loading"
     [diameter]="50"
     mode="indeterminate"
   ></mat-progress-spinner>
