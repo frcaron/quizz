@@ -8,25 +8,35 @@
   } as data"
 >
   <div class="part1 flex-fill-row"></div>
-  <div class="part2 flex-fill-row"></div>
+  <div class="part2 flex-fill-row">
+  <mat-progress-spinner
+  *ngIf="data.loading"
+  [diameter]="50"
+  mode="indeterminate"
+></mat-progress-spinner>
+  </div>
 
   <div class="main">
-    <span *ngIf="data.loaded" class="main-subtitle1">{{ data.questions.length }} questions</span>
+    <span *ngIf="data.loaded" class="main-subtitle1"
+      >{{ data.questions.length }} questions</span
+    >
     <span class="main-subtitle2">Mon test technique</span>
     <div>
-      <button mat-flat-button color="primary" (click)="start()" [disabled]="!data.loaded">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="start()"
+        [disabled]="!data.loaded"
+      >
         Démarrer
       </button>
     </div>
-    <mat-progress-spinner
-      *ngIf="data.loading"
-      [diameter]="50"
-      mode="indeterminate"
-    ></mat-progress-spinner>
   </div>
 
   <div *ngIf="data.played" class="bestscore">
     <span class="bestscore-subtitle1">Best Score</span>
-    <span class="bestscore-subtitle2">{{ data.bestScore }} / {{ data.questions.length }}</span>
+    <span class="bestscore-subtitle2"
+      >{{ data.bestScore }} / {{ data.questions.length }}</span
+    >
   </div>
 </ng-container>
