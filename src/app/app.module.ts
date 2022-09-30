@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
@@ -15,6 +15,11 @@ import { QuestionTextComponent } from '../components/question/text/question-text
 import { QuestionMultipleChoiceComponent } from '../components/question/multpiple-choice/question-multiple-choice.component';
 import { QuestionChoiceComponent } from '../components/question/choice/question-choice.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   imports: [
@@ -22,10 +27,16 @@ import { MatChipsModule } from '@angular/material/chips';
     CommonModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     MatButtonModule,
     MatProgressSpinnerModule,
     MatChipsModule,
+    MatIconModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatFormFieldModule,
   ],
   declarations: [
     AppComponent,

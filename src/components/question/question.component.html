@@ -12,14 +12,17 @@
     <question-choice
       *ngSwitchCase="'choice'"
       [question]="$any(data.question.dto)"
+      (dataChanges)="onDataChange($event)"
     ></question-choice>
     <question-multiple-choice
       *ngSwitchCase="'multiple-choice'"
       [question]="$any(data.question.dto)"
+      (dataChanges)="onDataChange($event)"
     ></question-multiple-choice>
     <question-text
       *ngSwitchCase="'text'"
       [question]="$any(data.question.dto)"
+      (dataChanges)="onDataChange($event)"
     ></question-text>
   </ng-container>
 

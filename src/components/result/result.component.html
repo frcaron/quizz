@@ -16,10 +16,17 @@
           >Meilleur score: {{ data.bestScore }} /
           {{ data.questions.length }}</span
         >
-        <mat-chip color="accent">New!</mat-chip>
+        <mat-chip color="accent" selected>New!</mat-chip>
       </div>
     </div>
-    <div class="flex-fill-column"></div>
+    <div class="flex-fill-column">
+      <span>Detail des résultats</span>
+      <div *ngFor="let question of data.questions" class="flex-row gap-05">
+        <span>{{ question.dto.label }}</span>
+        <mat-icon *ngIf="question.valid">done</mat-icon>
+        <mat-icon *ngIf="!question.valid">close</mat-icon>
+      </div>
+    </div>
   </div>
   <div>
     <button mat-flat-button color="primary" (click)="close()">Fermer</button>

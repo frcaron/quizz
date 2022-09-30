@@ -1,5 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { SelectionModel } from '@angular/cdk/collections';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy,
+  Output,
+} from '@angular/core';
+import { map, Observable, ReplaySubject } from 'rxjs';
 import { QuestionMultipleChoiceDto } from '../../../models/dto';
 
 @Component({
@@ -18,6 +25,12 @@ export class QuestionMultipleChoiceComponent implements OnDestroy {
   }
   private readonly _question$ = new ReplaySubject<QuestionMultipleChoiceDto>(1);
   readonly question$ = this._question$.asObservable();
+
+  readonly model = new SelectionModel();
+
+  @Output() dataChanges = this.model.changed.pipe(
+    map(() => this.model.selected)
+  ) as Observable<string[]>;
 
   ngOnDestroy() {
     this._question$.complete();

@@ -118,6 +118,11 @@ export class QuizzService extends ComponentStore<State> {
     playing: false,
     played: true,
     finished: false,
+    questions: state.questions.map(question => ({
+      ...question,
+      data: undefined,
+      valid: false
+    }))
   }));
 
   private _load(): Observable<Question[]> {

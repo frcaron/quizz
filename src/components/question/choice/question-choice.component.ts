@@ -3,8 +3,10 @@ import {
   Component,
   Input,
   OnDestroy,
+  Output,
 } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { Observable, ReplaySubject } from 'rxjs';
 import { QuestionChoiceDto } from '../../../models/dto';
 
 @Component({
@@ -23,6 +25,10 @@ export class QuestionChoiceComponent implements OnDestroy {
   }
   private readonly _question$ = new ReplaySubject<QuestionChoiceDto>(1);
   readonly question$ = this._question$.asObservable();
+
+  readonly control = new FormControl();
+
+  @Output() dataChanges = this.control.valueChanges as Observable<string>;
 
   ngOnDestroy() {
     this._question$.complete();

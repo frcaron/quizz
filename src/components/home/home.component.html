@@ -8,7 +8,7 @@
   } as data"
 >
   <div class="flex-column">
-    <span>{{ data.questions.length }} questions</span>
+    <span *ngIf="data.loaded">{{ data.questions.length }} questions</span>
     <span>Mon test technique</span>
     <div>
       <button mat-flat-button color="primary" (click)="start()" [disabled]="!data.loaded">
@@ -24,6 +24,7 @@
   ></mat-progress-spinner>
 
   <div *ngIf="data.played">
-    Best Score {{ data.bestScore }} / {{ data.questions.length }}
+    <span>Best Score</span>
+    <span>{{ data.bestScore }} / {{ data.questions.length }}</span>
   </div>
 </ng-container>
