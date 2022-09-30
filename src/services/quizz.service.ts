@@ -192,7 +192,7 @@ export class QuizzService extends ComponentStore<State> {
         if (!isString(data)) {
           return false;
         }
-        return question.answer === data;
+        return question.answer.trim().toLowerCase() === data.trim().toLowerCase();
       }
 
       case 'multiple-choice': {

@@ -1,4 +1,4 @@
-<ng-container
+<form
   *ngIf="{
     question: (question$ | async)!,
     questions: (questions$ | async)!,
@@ -30,6 +30,14 @@
   </ng-container>
 
   <div>
-    <button mat-flat-button color="primary" (click)="next()" [disabled]="!data.answer">Valider</button>
+    <button
+      type="submit"
+      mat-flat-button
+      color="primary"
+      (click)="next()"
+      [disabled]="!data.answer"
+    >
+      Valider
+    </button>
   </div>
-</ng-container>
+</form>

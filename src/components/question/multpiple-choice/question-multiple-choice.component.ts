@@ -27,7 +27,7 @@ export class QuestionMultipleChoiceComponent implements OnDestroy {
   private readonly _question$ = new ReplaySubject<QuestionMultipleChoiceDto>(1);
   readonly question$ = this._question$.asObservable();
 
-  readonly model = new SelectionModel();
+  readonly model = new SelectionModel(true);
 
   @Output() answerChange = this.model.changed.pipe(
     map(() => this.model.selected)
