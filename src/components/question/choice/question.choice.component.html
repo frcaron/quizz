@@ -1,0 +1,7 @@
+<ng-container
+  *ngIf="{
+    question: (question$ | async)!
+  } as data"
+>
+  <span>{{ data.question.label }}</span>
+</ng-container>

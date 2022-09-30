@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs';
 import { QuizzService } from '../../services/quizz.service';
 
 @Component({
@@ -11,7 +13,10 @@ import { QuizzService } from '../../services/quizz.service';
   },
 })
 export class QuestionComponent {
-  constructor(private readonly quizzService: QuizzService) {}
+  readonly id$ = this.route.params.pipe(map(params => params['id']));
+  readonly question$ = 
+
+  constructor(private readonly quizzService: QuizzService, private readonly route: ActivatedRoute) {}
 
   next() {
     this.quizzService.next();
