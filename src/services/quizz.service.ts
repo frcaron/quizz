@@ -17,7 +17,9 @@ interface State {
   readonly playAtLeastOne: boolean;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class QuizzService extends ComponentStore<State> {
   readonly loaded$ = this.select(({ loaded }) => loaded);
   readonly loading$ = this.select(({ loading }) => loading);

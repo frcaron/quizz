@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { QuizzService } from "../../services/quizz.service";
 
 @Component({
   selector: 'home',
@@ -7,5 +8,8 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent {
+  readonly loading$ = this.quizzService.loading$;
+  readonly loaded$ = this.quizzService.loaded$;
 
+  constructor (private readonly quizzService: QuizzService){}
 }
