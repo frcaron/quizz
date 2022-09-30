@@ -1,30 +1,13 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { ComponentStore } from '@ngrx/component-store';
+import { ComponentStore, tapResponse } from '@ngrx/component-store';
+import { map, Observable } from 'rxjs';
 
-interface QuestionBase {
-  readonly label: string;
-  readonly type: string;
+interface Question {
+  readonly id: number;
+  readonly dto: QuestionDto;
 }
-
-interface QuestionText extends QuestionBase {
-  readonly type: 'text';
-  readonly answer: string;
-}
-
-interface QuestionChoice extends QuestionBase {
-  readonly type: 'choice';
-  readonly choices: string[];
-  readonly answer: string;
-}
-
-interface QuestionMultipleChoice extends QuestionBase {
-  readonly type: 'multiple-choice';
-  readonly choices: string[];
-  readonly answers: string[];
-}
-
-type Question = QuestionText | QuestionChoice | QuestionMultipleChoice;
 
 interface State {
   readonly loaded: boolean;
@@ -44,7 +27,7 @@ export class QuizzService extends ComponentStore<State> {
     ({ playAtLeastOne }) => playAtLeastOne
   );
 
-  constructor() {
+  constructor(private readonly http: HttpClient) {
     super({
       loaded: false,
       loading: false,
@@ -52,5 +35,45 @@ export class QuizzService extends ComponentStore<State> {
       bestScore: 0,
       playAtLeastOne: false,
     });
+  }
+
+  readonly load = this.effect(() => {
+    this.loading();
+    return this._load().pipe(
+      tapResponse<Question[]>(
+        (questions) => this.loadSuccess(questions),
+        () => this.loadFailed()
+      )
+    );
+  });
+
+  readonly loading = this.updater((state) => ({
+    ...state,
+    loading: true,
+  }));
+  readonly loadSuccess = this.updater((state, questions: Question[]) => ({
+    ...state,
+    questions,
+    loading: false,
+    loaded: true,
+  }));
+  readonly loadFailed = this.updater((state) => ({
+    ...state,
+    loading: false,
+  }));
+
+  private _load(): Observable<Question[]> {
+    return this.http
+      .get<QuestionDto[]>(
+        'https://storage.googleapis.com/netwo-public/quizz.json'
+      )
+      .pipe(
+        map((res) =>
+          res.map((dto, id) => ({
+            id,
+            dto,
+          }))
+        )
+      );
   }
 }
