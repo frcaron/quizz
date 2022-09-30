@@ -1,7 +1,8 @@
 <ng-container
   *ngIf="{
     question: (question$ | async)!,
-    questions: (questions$ | async)!
+    questions: (questions$ | async)!,
+    answer: (answer$ | async)!
   } as data"
 >
   <div>
@@ -12,21 +13,21 @@
     <question-choice
       *ngSwitchCase="'choice'"
       [question]="$any(data.question.dto)"
-      (dataChanges)="onDataChange($event)"
+      (answerChange)="onAnswerChange($event)"
     ></question-choice>
     <question-multiple-choice
       *ngSwitchCase="'multiple-choice'"
       [question]="$any(data.question.dto)"
-      (dataChanges)="onDataChange($event)"
+      (answerChange)="onAnswerChange($event)"
     ></question-multiple-choice>
     <question-text
       *ngSwitchCase="'text'"
       [question]="$any(data.question.dto)"
-      (dataChanges)="onDataChange($event)"
+      (answerChange)="onAnswerChange($event)"
     ></question-text>
   </ng-container>
 
   <div>
-    <button mat-flat-button color="primary" (click)="next()">Valider</button>
+    <button mat-flat-button color="primary" (click)="next()" [disabled]="!data.answer">Valider</button>
   </div>
 </ng-container>

@@ -22,13 +22,14 @@ export class QuestionTextComponent implements OnDestroy {
   @Input()
   set question(input: QuestionTextDto) {
     this._question$.next(input);
+    this.control.reset();
   }
   private readonly _question$ = new ReplaySubject<QuestionTextDto>(1);
   readonly question$ = this._question$.asObservable();
 
   readonly control = new FormControl();
 
-  @Output() dataChanges = this.control.valueChanges as Observable<string>;
+  @Output() answerChange = this.control.valueChanges as Observable<string>;
 
   ngOnDestroy() {
     this._question$.complete();

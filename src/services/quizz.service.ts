@@ -96,19 +96,22 @@ export class QuizzService extends ComponentStore<State> {
     );
     const nextId = currentQuestion?.nextId;
     const finished = !nextId;
+    const questions = [
+      ...state.questions.filter(({ id }) => id !== currentStep),
+      {
+        ...currentQuestion,
+        data,
+        valid: this._validateQuestion(currentQuestion.dto, data),
+      },
+    ];
+    const score = questions.filter(({ valid }) => valid).length;
     return {
       ...state,
       currentStep: nextId,
       playing: !finished,
       finished,
-      questions: [
-        ...state.questions.filter(({ id }) => id !== currentStep),
-        {
-          ...currentQuestion,
-          data,
-          valid: this._validateQuestion(currentQuestion.dto, data),
-        },
-      ],
+      questions,
+      bestScore: score > state.bestScore ? score : state.bestScore,
     };
   });
 
@@ -118,11 +121,11 @@ export class QuizzService extends ComponentStore<State> {
     playing: false,
     played: true,
     finished: false,
-    questions: state.questions.map(question => ({
+    questions: state.questions.map((question) => ({
       ...question,
       data: undefined,
-      valid: false
-    }))
+      valid: false,
+    })),
   }));
 
   private _load(): Observable<Question[]> {

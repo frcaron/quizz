@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, map, of, switchMap, tap } from 'rxjs';
 import { QuizzService } from '../../services/quizz.service';
 
 @Component({
@@ -15,13 +15,18 @@ import { QuizzService } from '../../services/quizz.service';
 export class QuestionComponent implements OnDestroy {
   readonly id$ = this.route.params.pipe(map((params) => params['id']));
   readonly question$ = this.id$.pipe(
+    tap(() => this._answer$.next(undefined)),
     switchMap((id) =>
       id ? this.quizzService.getQuestionById(id) : of(undefined)
     )
   );
   readonly questions$ = this.quizzService.questions$;
 
-  private _data$ = new BehaviorSubject<unknown | undefined>(undefined);
+  // answer cache should be replace by a form control if subfield has been value accessor
+  private readonly _answer$ = new BehaviorSubject<unknown | undefined>(
+    undefined
+  );
+  readonly answer$ = this._answer$.asObservable();
 
   constructor(
     private readonly quizzService: QuizzService,
@@ -29,14 +34,14 @@ export class QuestionComponent implements OnDestroy {
   ) {}
 
   next() {
-    this.quizzService.next(this._data$.value);
+    this.quizzService.next(this._answer$.value);
   }
 
   ngOnDestroy() {
-    this._data$.complete();
+    this._answer$.complete();
   }
 
-  onDataChange(data: unknown) {
-    this._data$.next(data)
+  onAnswerChange(data: unknown) {
+    this._answer$.next(data);
   }
 }
