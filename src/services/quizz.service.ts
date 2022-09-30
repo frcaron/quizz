@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
 import { map, Observable, delay } from 'rxjs';
 import { QuestionDto } from '../models/dto';
+import { generateId, isArray, isString } from '../utils/util';
 
 export interface Question {
   readonly id: string;
@@ -20,6 +21,7 @@ interface State {
   readonly loading: boolean;
   readonly questions: Question[];
   readonly bestScore: number;
+  readonly playStartTs: number | undefined;
   readonly playing: boolean;
   readonly played: boolean;
   readonly finished: boolean;
@@ -34,6 +36,7 @@ export class QuizzService extends ComponentStore<State> {
   readonly loading$ = this.select(({ loading }) => loading);
   readonly questions$ = this.select(({ questions }) => questions);
   readonly bestScore$ = this.select(({ bestScore }) => bestScore);
+  readonly playStartTs$ = this.select(({ playStartTs }) => playStartTs);
   readonly playing$ = this.select(({ playing }) => playing);
   readonly played$ = this.select(({ played }) => played);
   readonly finished$ = this.select(({ finished }) => finished);
@@ -45,6 +48,7 @@ export class QuizzService extends ComponentStore<State> {
       loading: false,
       questions: [],
       bestScore: 0,
+      playStartTs: undefined,
       playing: false,
       played: false,
       finished: false,
@@ -52,12 +56,18 @@ export class QuizzService extends ComponentStore<State> {
     });
   }
 
+  /**
+   * Find question with the given id
+   */
   getQuestionById(id: string): Observable<Question | undefined> {
     return this.questions$.pipe(
       map((questions) => questions.find((question) => question.id === id))
     );
   }
 
+  /**
+   * Load quizz
+   */
   readonly loading = this.updater((state) => ({
     ...state,
     loading: true,
@@ -82,13 +92,30 @@ export class QuizzService extends ComponentStore<State> {
     );
   });
 
+  /**
+   * Start quizz
+   */
   readonly start = this.updater((state) => ({
     ...state,
     currentStep: state.questions[0]?.id,
-    playing: false,
+    playStartTs: new Date().getTime(),
+    playing: true,
     finished: false,
   }));
 
+  /**
+   * Stop quizz
+   */
+  readonly stop = this.updater((state) => ({
+    ...state,
+    currentStep: undefined,
+    playing: false,
+    finished: true,
+  }));
+
+  /**
+   * Next question
+   */
   readonly next = this.updater((state, data: unknown) => {
     const currentStep = state.currentStep;
     const currentQuestion = state.questions.find(
@@ -115,9 +142,13 @@ export class QuizzService extends ComponentStore<State> {
     };
   });
 
+  /**
+   * Reset quizz
+   */
   readonly reset = this.updater((state) => ({
     ...state,
     currentStep: undefined,
+    playStartTs: undefined,
     playing: false,
     played: true,
     finished: false,
@@ -134,12 +165,12 @@ export class QuizzService extends ComponentStore<State> {
         'https://storage.googleapis.com/netwo-public/quizz.json'
       )
       .pipe(
-        // simulate 3s delay loading
-        delay(3000),
+        // simulate 2s delay loading
+        delay(2000),
         map((res) =>
           res
             .map((dto, i) => ({
-              id: this._generateId(),
+              id: generateId(),
               order: i + 1,
               dto,
               data: undefined,
@@ -158,14 +189,14 @@ export class QuizzService extends ComponentStore<State> {
     switch (question.answerType) {
       case 'choice':
       case 'text': {
-        if (!this._isString(data)) {
+        if (!isString(data)) {
           return false;
         }
         return question.answer === data;
       }
 
       case 'multiple-choice': {
-        if (!this._isArray(data)) {
+        if (!isArray(data)) {
           return false;
         }
         return question.answers.every((answer) =>
@@ -176,17 +207,5 @@ export class QuizzService extends ComponentStore<State> {
       default:
         return false;
     }
-  }
-
-  private _generateId(): string {
-    return '_' + Math.random().toString(36).substr(2, 9);
-  }
-
-  private _isString(obj: unknown): obj is string {
-    return typeof obj === 'string';
-  }
-
-  private _isArray<T>(obj: unknown): obj is Array<T> {
-    return Array.isArray(obj);
   }
 }

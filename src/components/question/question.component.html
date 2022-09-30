@@ -2,11 +2,13 @@
   *ngIf="{
     question: (question$ | async)!,
     questions: (questions$ | async)!,
-    answer: (answer$ | async)!
+    answer: (answer$ | async)!,
+    timer: (timer$ | async)!
   } as data"
 >
-  <div>
+  <div class="header flex-row align-items-center justify-content-between">
     <h1>Question {{ data.question.order }} / {{ data.questions.length }}</h1>
+    {{ data.timer }}
   </div>
 
   <ng-container [ngSwitch]="data.question.dto.answerType">

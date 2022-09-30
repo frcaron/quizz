@@ -6,7 +6,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { combineLatest, exhaustMap, filter, takeUntil, timer } from 'rxjs';
 import { QuizzService } from '../services/quizz.service';
 
 @Component({
@@ -35,8 +35,7 @@ export class AppComponent implements OnInit {
     // load quizz question
     this.quizzService.load();
 
-    // not necessary to unsubscibe
-    // cause we are in the root component
+    // not necessary to unsubscibe cause we are in the root component
     combineLatest({
       currentStep: this.currentStep$,
       finished: this.finished$,
@@ -52,5 +51,18 @@ export class AppComponent implements OnInit {
       this.router.navigate(['..', 'home']);
       return;
     });
+
+    // automatically stop the game after 2mn
+    // not necessary to unsubscibe cause we are in the root component
+    this.playing$
+      .pipe(
+        filter((is) => is),
+        exhaustMap(() =>
+          timer(2 * 60 * 1000).pipe(
+            takeUntil(this.finished$.pipe(filter((is) => is)))
+          )
+        )
+      )
+      .subscribe(() => this.quizzService.stop());
   }
 }

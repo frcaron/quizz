@@ -1,7 +1,17 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, map, of, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  map,
+  of,
+  switchMap,
+  tap,
+  interval,
+  filter,
+  startWith,
+} from 'rxjs';
 import { QuizzService } from '../../services/quizz.service';
+import { notNullOrUndefined } from '../../utils/util';
 
 @Component({
   selector: 'question',
@@ -21,6 +31,18 @@ export class QuestionComponent implements OnDestroy {
     )
   );
   readonly questions$ = this.quizzService.questions$;
+  readonly playStartTs$ = this.quizzService.playStartTs$;
+
+  readonly timer$ = this.playStartTs$.pipe(
+    filter(notNullOrUndefined),
+    switchMap((ts) =>
+      interval(1 * 1000).pipe(
+        startWith(0),
+        map(() => new Date().getTime() - ts),
+        map((time) => Math.round(time / 1000))
+      )
+    )
+  );
 
   // answer cache should be replace by a form control if subfield has been value accessor
   private readonly _answer$ = new BehaviorSubject<unknown | undefined>(
