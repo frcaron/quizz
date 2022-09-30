@@ -16,7 +16,7 @@ export class HomeComponent {
   readonly loaded$ = this.quizzService.loaded$;
   readonly questions$ = this.quizzService.questions$;
   readonly bestScore$ = this.quizzService.bestScore$;
-  readonly playAtLeastOne$ = this.quizzService.playAtLeastOne$;
+  readonly played$ = this.quizzService.played$;
 
   constructor(private readonly quizzService: QuizzService) {}
 

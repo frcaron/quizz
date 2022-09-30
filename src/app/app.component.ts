@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
   readonly debug = true;
   readonly state$ = this.quizzService.state$;
   readonly currentStep$ = this.quizzService.currentStep$;
+  readonly playing$ = this.quizzService.playing$;
   readonly finished$ = this.quizzService.finished$;
 
   constructor(

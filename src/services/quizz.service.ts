@@ -18,7 +18,8 @@ interface State {
   readonly loading: boolean;
   readonly questions: Question[];
   readonly bestScore: number;
-  readonly playAtLeastOne: boolean;
+  readonly playing: boolean;
+  readonly played: boolean;
   readonly finished: boolean;
   readonly currentStep: string | undefined;
 }
@@ -31,9 +32,8 @@ export class QuizzService extends ComponentStore<State> {
   readonly loading$ = this.select(({ loading }) => loading);
   readonly questions$ = this.select(({ questions }) => questions);
   readonly bestScore$ = this.select(({ bestScore }) => bestScore);
-  readonly playAtLeastOne$ = this.select(
-    ({ playAtLeastOne }) => playAtLeastOne
-  );
+  readonly playing$ = this.select(({ playing }) => playing);
+  readonly played$ = this.select(({ played }) => played);
   readonly finished$ = this.select(({ finished }) => finished);
   readonly currentStep$ = this.select(({ currentStep }) => currentStep);
 
@@ -43,11 +43,19 @@ export class QuizzService extends ComponentStore<State> {
       loading: false,
       questions: [],
       bestScore: 0,
-      playAtLeastOne: false,
+      playing: false,
+      played: false,
       finished: false,
       currentStep: undefined,
     });
   }
+
+  getQuestionById(id: string): Observable<Question | undefined> {
+    return this.questions$.pipe(
+      map((questions) => questions.find((question) => question.id === id))
+    );
+  }
+
   readonly loading = this.updater((state) => ({
     ...state,
     loading: true,
@@ -75,6 +83,7 @@ export class QuizzService extends ComponentStore<State> {
   readonly start = this.updater((state) => ({
     ...state,
     currentStep: state.questions[0]?.id,
+    playing: false,
     finished: false,
   }));
 
@@ -86,11 +95,18 @@ export class QuizzService extends ComponentStore<State> {
     return {
       ...state,
       currentStep: nextId,
+      playing: !finished,
       finished,
     };
   });
 
-  readonly reset = this.updater((state) => state);
+  readonly reset = this.updater((state) => ({
+    ...state,
+    currentStep: undefined,
+    playing: false,
+    played: true,
+    finished: false,
+  }));
 
   private _load(): Observable<Question[]> {
     return this.http

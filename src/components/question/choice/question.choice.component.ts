@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy,
+} from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { QuestionChoiceDto } from '../../../models/dto';
 

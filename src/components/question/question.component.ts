@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs';
+import { map, of, switchMap } from 'rxjs';
 import { QuizzService } from '../../services/quizz.service';
 
 @Component({
@@ -13,10 +13,18 @@ import { QuizzService } from '../../services/quizz.service';
   },
 })
 export class QuestionComponent {
-  readonly id$ = this.route.params.pipe(map(params => params['id']));
-  readonly question$ = 
+  readonly id$ = this.route.params.pipe(map((params) => params['id']));
+  readonly question$ = this.id$.pipe(
+    switchMap((id) =>
+      id ? this.quizzService.getQuestionById(id) : of(undefined)
+    )
+  );
+  readonly questions$ = this.quizzService.questions$;
 
-  constructor(private readonly quizzService: QuizzService, private readonly route: ActivatedRoute) {}
+  constructor(
+    private readonly quizzService: QuizzService,
+    private readonly route: ActivatedRoute
+  ) {}
 
   next() {
     this.quizzService.next();

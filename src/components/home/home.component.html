@@ -4,7 +4,7 @@
     loaded: (loaded$ | async)!,
     questions: (questions$ | async)!,
     bestScore: (bestScore$ | async)!,
-    playAtLeastOne: (playAtLeastOne$ | async)!
+    played: (played$ | async)!
   } as data"
 >
   <div class="flex-column">
@@ -23,7 +23,7 @@
     mode="indeterminate"
   ></mat-progress-spinner>
 
-  <div *ngIf="data.playAtLeastOne">
+  <div *ngIf="data.played">
     Best Score {{ data.bestScore }} / {{ data.questions.length }}
   </div>
 </ng-container>

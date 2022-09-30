@@ -1,5 +1,27 @@
-<ng-container *ngIf="{} as data">
-  
+<ng-container
+  *ngIf="{
+    question: (question$ | async)!,
+    questions: (questions$ | async)!
+  } as data"
+>
+  <div>
+    <h1>Question {{ data.question.order }} / {{ data.questions.length }}</h1>
+  </div>
+
+  <ng-container [ngSwitch]="data.question.dto.answerType">
+    <question-choice
+      *ngSwitchCase="'choice'"
+      [question]="$any(data.question.dto)"
+    ></question-choice>
+    <question-multiple-choice
+      *ngSwitchCase="'multiple-choice'"
+      [question]="$any(data.question.dto)"
+    ></question-multiple-choice>
+    <question-text
+      *ngSwitchCase="'text'"
+      [question]="$any(data.question.dto)"
+    ></question-text>
+  </ng-container>
 
   <div>
     <button mat-flat-button color="primary" (click)="next()">Valider</button>
